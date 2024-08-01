@@ -2,14 +2,13 @@
 
 ## Requirements
 
-- Requires Xcode 15.2 or above
+- Requires Xcode 15.X or above
 - For Objective C projects add `-ObjC` on `Other Linker Flags` option.
 
 
 
 ## Installation
 
-> If you've previously used CocoaPods, remove them from the project with `pod deintegrate`.
 
 ### Installing from Xcode
 
