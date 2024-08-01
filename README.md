@@ -95,6 +95,13 @@ extension MyViewController: TranstekDelegate {
 }
 ```
 
+## Example Demo App
+
+You can easily download the DemoApp, which integrates the LifevitSDK, through the Swift Package Manager (SPM). This allows you to explore and experiment with the SDK's features directly within the app.
+
+[Download Example App](https://github.com/lifevit/ios-app/tree/3.0.0).
+
+
 ## Questions and Issues
 
 Please provide any feedback via a [GitHub
