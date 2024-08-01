@@ -1,4 +1,4 @@
-# Swift Package Manager for LifevitSDK
+# LifevitSDK on Swift Package Manager
 
 ## Requirements
 
