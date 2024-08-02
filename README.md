@@ -7,24 +7,27 @@
 
 
 
+
 ## Installation
 
 
 ### Installing from Xcode
 
-Add a package by selecting `File` → `Add Packages…` in Xcode’s menu bar.
+* Add a package by selecting `File` → `Add Packages…` in Xcode’s menu bar.
 
 
----
-
-Search for the LifevitSDK using the repo's URL:
+* Search for the LifevitSDK using the repo's URL:
 ```
 https://github.com/lifevit/LifevitSPM.git
 ```
 
-Next, set the **Dependency Rule** to be `branch` `main`.
+* Set the **Dependency Rule** to be `branch` `main` and then, select **Add Package**.
 
-Then, select **Add Package**.
+* Add into `Info.plist`: **Privacy - Bluetooth Always Usage Description** something like:
+
+ 
+	>This allows you to connect with your BLE devices via Bluetooth.
+
 
 
 ## Usage
@@ -93,6 +96,15 @@ extension MyViewController: TranstekDelegate {
     }
 }
 ```
+
+
+-
+
+
+### ⚠️ Attention
+
+>- If you’re having trouble connecting your Transtek device, try putting into pairing mode by pressing and holding the button. Once it’s paired, you won’t need to do this again. 
+
 
 ## Example Demo App
 
