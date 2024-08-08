@@ -31,7 +31,7 @@ https://github.com/lifevit/LifevitSPM.git
 
 
 ## Usage
-### For Lifevit Devices
+### 1. For Lifevit Devices
 You'll need to import:
 `import LifevitSDK`
 
@@ -40,7 +40,7 @@ You have a complete documentation of the library and all its devices in:
 [https://developers.lifevit.es/](https://developers.lifevit.es/)
 
 
-### For Transtek Devices (TMB-2284-B, TMB-2296-BT)
+### 2. For Transtek Devices (TMB-2284-B, TMB-2296-BT)
 
 You'll need to import:
 
@@ -104,6 +104,54 @@ extension MyViewController: TranstekDelegate {
 ### ⚠️ Attention
 
 >- If you’re having trouble connecting your Transtek device, try putting into pairing mode by pressing and holding the button. Once it’s paired, you won’t need to do this again. 
+
+
+### 3. For AOJ Thermometer (AOJ-20F)
+You'll need to import:
+
+```
+import LifevitSPM
+```
+
+1- On your ViewController:
+
+```
+class MyViewController {
+
+let manager = AOJManager()
+var deviceData: AOJData? // If you want to save device info
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        manager.delegate = self
+    }
+}
+
+```
+
+2- You can call this method to connect and retrieve data:
+
+```
+manager.scanConnectAndRetrieveData()
+```
+
+3- You'll receive live device data on AOJDelegate
+
+```
+extension MyViewController: AOJDelegate {
+	func onDeviceInfo(deviceInfo: AOJDeviceInfo) {
+        // Callback with connected device info
+    }
+    
+    func onDataReceived(data: AOJData) {
+        // Callback with Data received
+        self.deviceData = data
+    }
+}
+```
+
+
 
 
 ## Example Demo App
