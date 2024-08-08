@@ -128,33 +128,5 @@ extension TranstekManager: LSDeviceDataDelegate {
     
     public func bleDevice(_ device: LSDeviceInfo!, didDataUpdateForBloodPressureMonitor data: LSBloodPressure!) {
         delegate?.onDataReceived(data: data)
-        
-        DispatchQueue.main.async {
-            
-//            print(data.toString())
-            
-            var results: [String : String] = ["":""]
-            
-            //source data
-            let str = String.init(format: "\nsrcData=%@\n",data.srcData!.hexadecimal)
-            print(">> \(str)")
-
-            //log class name
-            let className = type(of: data).description()
-            print(">> \(className)")
-            
-            //log class properties
-            for (key, value) in data.toString() {
-                results.updateValue("\(value)", forKey: "\(key)")
-            }
-            results.updateValue(data.measureTime ?? "", forKey: "measureTime")
-            print(results)
-        }
-    }
-}
-
-extension Data {
-    var hexadecimal: String {
-        return map { String(format: "%02X", $0) }.joined()
     }
 }
