@@ -10,6 +10,7 @@ import CoreBluetooth
 
 
 public protocol AOJDelegate {
+    func onConnectedPeripheral(identifier: String, name: String)
     func onDeviceInfo(deviceInfo: AOJDeviceInfo)
     func onDataReceived(data: AOJData)
 }
@@ -34,6 +35,17 @@ public class AOJManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
+    public func disconnect(_ peripheral: CBPeripheral? = nil) {
+        if let peripheral {
+            centralManager?.cancelPeripheralConnection(peripheral)
+            centralManager = nil
+        } else {
+            guard let discoveredPeripheral else { return }
+            centralManager?.cancelPeripheralConnection(discoveredPeripheral)
+            centralManager = nil
+        }
+    }
+    
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -53,6 +65,8 @@ public class AOJManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
         guard let peripheralName = peripheral.name else { return }
         if self.devicesAllowed.contains(peripheralName) {
             discoveredPeripheral = peripheral
+            delegate?.onConnectedPeripheral(identifier: peripheral.identifier.uuidString, name: peripheralName)
+            
             centralManager?.stopScan()
             centralManager?.connect(peripheral, options: nil)
         }
