@@ -60,7 +60,7 @@ enum AOJCommands {
                     let tempEnd = str.index(str.startIndex, offsetBy: 12)
                     let subString = str[tempStart..<tempEnd]
                     let decimalValue = Double(UInt16(subString, radix: 16) ?? 0) / 100.0
-                    let temperature = String(format: "%.1f", decimalValue)
+                    let temperature = String(format: "%.2f", decimalValue)
                     
                     let modeStart = str.index(str.startIndex, offsetBy: 12)
                     let modeEnd = str.index(str.startIndex, offsetBy: 14)
