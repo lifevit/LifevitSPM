@@ -40,7 +40,7 @@ You have a complete documentation of the library and all its devices in:
 [https://developers.lifevit.es/](https://developers.lifevit.es/)
 
 
-### 2. For Transtek Devices (TMB-2284-B, TMB-2296-BT)
+### 2. For Devices (BPM-260, BPM-300)
 
 You'll need to import:
 
@@ -103,10 +103,10 @@ extension MyViewController: TranstekDelegate {
 
 ### ⚠️ Attention
 
->- If you’re having trouble connecting your Transtek device, try putting into pairing mode by pressing and holding the button. Once it’s paired, you won’t need to do this again. 
+>- If you’re having trouble connecting your BPM device, try putting into pairing mode by pressing and holding the button. Once it’s paired, you won’t need to do this again. 
 
 
-### 3. For AOJ Thermometer (AOJ-20F)
+### 3. For Kelvin Plus Thermometer 
 You'll need to import:
 
 ```
