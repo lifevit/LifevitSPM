@@ -1,5 +1,5 @@
 //
-//  TranstekManager.swift
+//  BPMManager.swift
 //
 //
 //  Created by Marc on 31/7/24.
@@ -9,18 +9,18 @@
 import Foundation
 import LSBluetoothPlugin
 
-public protocol TranstekDelegate {
+public protocol BPMDelegate {
     func onDeviceInfo(deviceInfo: LSDeviceInfo)
     func onStatusChanged(state: LSConnectState, description: String)
     func onDataReceived(data: LSBloodPressure)
 }
 
-public class TranstekManager: NSObject {
+public class BPMManager: NSObject {
     
     private let devicesAllowed = ["TMB-2284-B", "TMB-2296-BT"]
-    public var delegate: TranstekDelegate?
+    public var delegate: BPMDelegate?
     
-    public init(delegate: TranstekDelegate? = nil) {
+    public init(delegate: BPMDelegate? = nil) {
         self.delegate = delegate
     }
     
@@ -84,7 +84,7 @@ public class TranstekManager: NSObject {
     }
 }
 
-extension TranstekManager: LSDeviceDataDelegate {
+extension BPMManager: LSDeviceDataDelegate {
     public func bleDevice(_ device: LSDeviceInfo!, didConnectStateChanged state: LSConnectState) {
         switch state {
         case .unknown:

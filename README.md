@@ -54,13 +54,13 @@ import LSBluetoothPlugin
 ```
 class MyViewController {
 
-let transtekManager = TranstekManager()
-var transtekDevice: LSDeviceInfo? // If you want to save device info
+let bpmManager = BPMManager()
+var bpmDevice: LSDeviceInfo? // If you want to save device info
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        transtekManager.delegate = self
+        bpmManager.delegate = self
     }
 }
 
@@ -70,21 +70,21 @@ var transtekDevice: LSDeviceInfo? // If you want to save device info
 
 ```
 // Main func to connect and receive data:
-transtekManager.scanConnectAndRetrieveData()
+bpmManager.scanConnectAndRetrieveData()
 
 // More options to connect and receive data
-transtekManager.connectAndRetrieveData(withMacAddress: "B8:B7:7D:0E:63:16") // <- Change this fake mac
-transtekManager.connectAndRetrieveData(for: transtekDevice)
+bpmManager.connectAndRetrieveData(withMacAddress: "B8:B7:7D:0E:63:16") // <- Change this fake mac
+bpmManager.connectAndRetrieveData(for: bpmDevice)
 ```
 
 
-3- You'll receive device data on TranstekDelegate
+3- You'll receive device data on BPMDelegate
 
 ```
-extension MyViewController: TranstekDelegate {
+extension MyViewController: BPMDelegate {
     func onDeviceInfo(deviceInfo: LSDeviceInfo) {
         // Callback with connected device info
-        transtekDevice = deviceInfo
+        bpmDevice = deviceInfo
     }
     
     func onStatusChanged(state: LSConnectState, description: String) {
@@ -118,8 +118,8 @@ import LifevitSPM
 ```
 class MyViewController {
 
-let manager = AOJManager()
-var deviceData: AOJData? // If you want to save device info
+let manager = KelvinManager()
+var deviceData: KelvinData? // If you want to save device info
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,15 +136,15 @@ var deviceData: AOJData? // If you want to save device info
 manager.scanConnectAndRetrieveData()
 ```
 
-3- You'll receive live device data on AOJDelegate
+3- You'll receive live device data on KelvinDelegate
 
 ```
-extension MyViewController: AOJDelegate {
-	func onDeviceInfo(deviceInfo: AOJDeviceInfo) {
+extension MyViewController: KelvinDelegate {
+	func onDeviceInfo(deviceInfo: KelvinDeviceInfo) {
         // Callback with connected device info
     }
     
-    func onDataReceived(data: AOJData) {
+    func onDataReceived(data: KelvinData) {
         // Callback with Data received
         self.deviceData = data
     }
