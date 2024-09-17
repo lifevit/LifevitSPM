@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  KelvinManager.swift
+//
 //
 //  Created by Marc on 8/8/24.
 //
@@ -9,16 +9,16 @@ import UIKit
 import CoreBluetooth
 
 
-public protocol AOJDelegate {
+public protocol KelvinDelegate {
     func onConnectedPeripheral(identifier: String, name: String)
-    func onDeviceInfo(deviceInfo: AOJDeviceInfo)
-    func onDataReceived(data: AOJData)
+    func onDeviceInfo(deviceInfo: KelvinDeviceInfo)
+    func onDataReceived(data: KelvinData)
 }
 
 
-public class AOJManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+public class KelvinManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    public var delegate: AOJDelegate?
+    public var delegate: KelvinDelegate?
     private let devicesAllowed = ["AOJ-20F"]
 
     private var centralManager: CBCentralManager? = nil
@@ -26,7 +26,7 @@ public class AOJManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     private var characteristicsList: [CBCharacteristic] = []
     
     
-    public init(delegate: AOJDelegate? = nil) {
+    public init(delegate: KelvinDelegate? = nil) {
         self.delegate = delegate
     }
     
@@ -111,9 +111,9 @@ public class AOJManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
             if strValue == "00" {
                 // Ask for SystemData
                 guard let char = characteristicsList.first(where: { $0.uuid == CBUUID(string: "FFE2") }) else { return }
-                discoveredPeripheral?.writeValue(AOJCommands.Request.SystemInfo.toData, for: char, type: .withResponse)
+                discoveredPeripheral?.writeValue(KelvinCommands.Request.SystemInfo.toData, for: char, type: .withResponse)
             } else {
-                let data = AOJCommands.Response.decode(str: strValue, forCommand: strValue.toResponseCommand)
+                let data = KelvinCommands.Response.decode(str: strValue, forCommand: strValue.toResponseCommand)
                 
                 if let deviceInfo = data.deviceInfo {
                     delegate?.onDeviceInfo(deviceInfo: deviceInfo)
@@ -125,14 +125,14 @@ public class AOJManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     }
 }
 
-extension AOJManager {
+extension KelvinManager {
     public func retrieveLastMeasure() {
         guard let char = characteristicsList.first(where: { $0.uuid == CBUUID(string: "FFE2") }) else { return }
-        discoveredPeripheral?.writeValue(AOJCommands.Request.LastMeasurement.toData, for: char, type: .withResponse)
+        discoveredPeripheral?.writeValue(KelvinCommands.Request.LastMeasurement.toData, for: char, type: .withResponse)
     }
     
     public func retrieveDeviceInfo() {
         guard let char = characteristicsList.first(where: { $0.uuid == CBUUID(string: "FFE2") }) else { return }
-        discoveredPeripheral?.writeValue(AOJCommands.Request.SystemInfo.toData, for: char, type: .withResponse)
+        discoveredPeripheral?.writeValue(KelvinCommands.Request.SystemInfo.toData, for: char, type: .withResponse)
     }
 }

@@ -118,8 +118,8 @@ import LifevitSPM
 ```
 class MyViewController {
 
-let manager = AOJManager()
-var deviceData: AOJData? // If you want to save device info
+let manager = KelvinManager()
+var deviceData: KelvinData? // If you want to save device info
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,15 +136,15 @@ var deviceData: AOJData? // If you want to save device info
 manager.scanConnectAndRetrieveData()
 ```
 
-3- You'll receive live device data on AOJDelegate
+3- You'll receive live device data on KelvinDelegate
 
 ```
-extension MyViewController: AOJDelegate {
-	func onDeviceInfo(deviceInfo: AOJDeviceInfo) {
+extension MyViewController: KelvinDelegate {
+	func onDeviceInfo(deviceInfo: KelvinDeviceInfo) {
         // Callback with connected device info
     }
     
-    func onDataReceived(data: AOJData) {
+    func onDataReceived(data: KelvinData) {
         // Callback with Data received
         self.deviceData = data
     }

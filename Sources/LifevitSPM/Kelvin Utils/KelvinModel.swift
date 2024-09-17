@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  KelvinModel.swift
 //
 //
 //  Created by Marc on 8/8/24.
@@ -8,20 +8,20 @@
 import Foundation
 
 
-public struct AOJData {
+public struct KelvinData {
     public var value: String?
     public var createdAt: Date?
-    public var mode: AOJThermometerMode?
-    public var deviceInfo: AOJDeviceInfo?
+    public var mode: KelvinThermometerMode?
+    public var deviceInfo: KelvinDeviceInfo?
 }
 
-public struct AOJDeviceInfo {
+public struct KelvinDeviceInfo {
     public var battery: String?
     public var version: String?
 }
 
 
-enum AOJCommands {
+enum KelvinCommands {
     enum Request {
         case LastMeasurement    // Request the last measurement data
         case SystemInfo         // Request system information data
@@ -52,7 +52,7 @@ enum AOJCommands {
         case LastMeasurement = "C1"     // Return the last measurement data
         case SystemInfo = "C5"          // Return system information data
         
-        static func decode(str: String, forCommand command: Response) -> AOJData {
+        static func decode(str: String, forCommand command: Response) -> KelvinData {
             if str.count == 16 {
                 switch command {
                 case .LastMeasurement:
@@ -64,9 +64,9 @@ enum AOJCommands {
                     
                     let modeStart = str.index(str.startIndex, offsetBy: 12)
                     let modeEnd = str.index(str.startIndex, offsetBy: 14)
-                    let mode = AOJThermometerMode(rawValue: Int(str[modeStart..<modeEnd]) ?? 0) ?? .AdultForehead
+                    let mode = KelvinThermometerMode(rawValue: Int(str[modeStart..<modeEnd]) ?? 0) ?? .AdultForehead
                     
-                    return AOJData(value: "\(temperature)", createdAt: Date(), mode: mode)
+                    return KelvinData(value: "\(temperature)", createdAt: Date(), mode: mode)
                     
                 case .SystemInfo:
                     let batteryStart = str.index(str.startIndex, offsetBy: 10)
@@ -77,17 +77,17 @@ enum AOJCommands {
                     let versionEnd = str.index(str.startIndex, offsetBy: 14)
                     let version = str[versionStart..<versionEnd].map { String($0) }.joined(separator: ".")
                     
-                    return AOJData(createdAt: Date(), deviceInfo: AOJDeviceInfo(battery: "\(battery)%", version: "v\(version)"))
+                    return KelvinData(createdAt: Date(), deviceInfo: KelvinDeviceInfo(battery: "\(battery)%", version: "v\(version)"))
                 }
             } else {
-                return AOJData()
+                return KelvinData()
             }
         }
     }
 }
 
 
-public enum AOJThermometerMode: Int {
+public enum KelvinThermometerMode: Int {
     case AdultForehead = 1
     case ChildrenForehead = 2
     case Ear = 3
