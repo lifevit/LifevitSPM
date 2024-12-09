@@ -37,7 +37,6 @@ public class BPMManager: NSObject {
                          LSDeviceType.bloodPressureMeter.rawValue,
                          LSDeviceType.thermometer.rawValue]
         
-        LSBluetoothManager.default()?.initManager(withDispatch: DispatchQueue.init(label: "bluetoothQueue"))
         LSBluetoothManager.default()?.searchDevice(deviceTypes, results: { [weak self] (device) in
             guard let self = self else { return }
             
