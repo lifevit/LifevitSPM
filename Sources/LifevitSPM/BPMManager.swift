@@ -17,7 +17,7 @@ public protocol BPMDelegate {
 
 public class BPMManager: NSObject {
     
-    private let devicesAllowed = ["TMB-2284-B", "TMB-2296-BT"]
+    private let devicesAllowed = ["TMB-2284-B", "TMB-2296-BT, TMB-2296-B"]
     public var delegate: BPMDelegate?
     
     public init(delegate: BPMDelegate? = nil) {
