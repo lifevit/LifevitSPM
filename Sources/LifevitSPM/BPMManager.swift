@@ -40,20 +40,27 @@ public class BPMManager: NSObject {
         LSBluetoothManager.default()?.searchDevice(deviceTypes, results: { [weak self] (device) in
             guard let self = self else { return }
             
-            let item = ScanResults(device: device)
-            if let name = item?.name, self.devicesAllowed.contains(name) {
+            guard let item = ScanResults(device: device) else { return }
+            if let name = item.name, self.devicesAllowed.contains(name) {
                 //add target device
-                let macAddress = item!.macAddress ?? ""
                 let device = LSDeviceInfo()
-                device.macAddress = macAddress
-                device.broadcastId = macAddress.replacingOccurrences(of: ":", with: "")
-                device.deviceType = LSDeviceType(rawValue: UInt(item!.deviceType))!
-                device.delayDisconnect = true
+                device.deviceName = name
+                device.macAddress = item.macAddress ?? ""
+                device.broadcastId = item.broadcastId
+                device.manufacturerData = item.manufacturerData
+                device.protocolType = item.protocolType
+                device.preparePair = item.isPairMode
+                device.deviceUserNumber = UInt.init(bitPattern: item.userNumber);
+                device.deviceType = LSDeviceType(rawValue: LSDeviceType.RawValue((item.deviceType)))!;
+                device.isRegistered = (item.registerState == 0x01);
                 
-                self.delegate?.onDeviceInfo(deviceInfo: device)
-                LSBluetoothManager.default().stopSearch()
-                LSBluetoothManager.default()?.addDevice(device)
-                LSBluetoothManager.default()?.startDeviceSync(self)
+                
+                //stop search
+                LSBluetoothManager.default()?.stopSearch();
+                //set the system pairing confirmation pop-up prompt
+                device.systemPairConfirm = true;
+                //pair device
+                LSBluetoothManager.default()?.pairDevice(device, delegate: self);
             }
         })
     }
@@ -79,6 +86,15 @@ public class BPMManager: NSObject {
         self.delegate?.onDeviceInfo(deviceInfo: device)
         LSBluetoothManager.default().stopSearch()
         LSBluetoothManager.default()?.setDevices([])
+        LSBluetoothManager.default()?.addDevice(device)
+        LSBluetoothManager.default()?.startDeviceSync(self)
+    }
+}
+
+extension BPMManager: LSDevicePairingDelegate {
+    public func bleDevice(_ device: LSDeviceInfo!, didPairStateChanged state: LSPairState) {
+        self.delegate?.onDeviceInfo(deviceInfo: device)
+        
         LSBluetoothManager.default()?.addDevice(device)
         LSBluetoothManager.default()?.startDeviceSync(self)
     }
