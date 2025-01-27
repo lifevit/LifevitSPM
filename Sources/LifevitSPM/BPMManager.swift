@@ -50,17 +50,26 @@ public class BPMManager: NSObject {
                 device.manufacturerData = item.manufacturerData
                 device.protocolType = item.protocolType
                 device.preparePair = item.isPairMode
-                device.deviceUserNumber = UInt.init(bitPattern: item.userNumber);
-                device.deviceType = LSDeviceType(rawValue: LSDeviceType.RawValue((item.deviceType)))!;
-                device.isRegistered = (item.registerState == 0x01);
-                
+                device.deviceUserNumber = UInt.init(bitPattern: item.userNumber)
+                device.deviceType = LSDeviceType(rawValue: LSDeviceType.RawValue((item.deviceType)))!
+                device.isRegistered = (item.registerState == 0x01)
+                device.delayDisconnect = true
                 
                 //stop search
                 LSBluetoothManager.default()?.stopSearch();
-                //set the system pairing confirmation pop-up prompt
-                device.systemPairConfirm = true;
-                //pair device
-                LSBluetoothManager.default()?.pairDevice(device, delegate: self);
+                
+                if(item.registerState == 0x01){
+                    self.delegate?.onDeviceInfo(deviceInfo: device)
+                    
+                    LSBluetoothManager.default()?.addDevice(device)
+                    LSBluetoothManager.default()?.startDeviceSync(self)
+                }
+                else{
+                    //set the system pairing confirmation pop-up prompt
+                    device.systemPairConfirm = true;
+                    //pair device
+                    LSBluetoothManager.default()?.pairDevice(device, delegate: self);
+                }
             }
         })
     }
@@ -93,6 +102,7 @@ public class BPMManager: NSObject {
 
 extension BPMManager: LSDevicePairingDelegate {
     public func bleDevice(_ device: LSDeviceInfo!, didPairStateChanged state: LSPairState) {
+        device.delayDisconnect = true
         self.delegate?.onDeviceInfo(deviceInfo: device)
         
         LSBluetoothManager.default()?.addDevice(device)
