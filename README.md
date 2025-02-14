@@ -94,6 +94,10 @@ extension MyViewController: BPMDelegate {
     func onDataReceived(data: LSBloodPressure) {
         // Callback with Data received
     }
+    
+    func onDeviceFound(deviceName: String) {
+        // Callback with name of device found on Bluetooth scanner
+    }
 }
 ```
 

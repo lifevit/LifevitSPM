@@ -13,6 +13,7 @@ public protocol BPMDelegate {
     func onDeviceInfo(deviceInfo: LSDeviceInfo)
     func onStatusChanged(state: LSConnectState, description: String)
     func onDataReceived(data: LSBloodPressure)
+    func onDeviceFound(deviceName: String)
 }
 
 public class BPMManager: NSObject {
@@ -41,6 +42,7 @@ public class BPMManager: NSObject {
             guard let self = self else { return }
             
             guard let item = ScanResults(device: device) else { return }
+            delegate?.onDeviceFound(deviceName: item.name ?? "unknown device name")
             if let name = item.name, self.devicesAllowed.contains(name) {
                 //add target device
                 let device = LSDeviceInfo()
