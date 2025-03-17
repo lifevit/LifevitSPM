@@ -104,11 +104,14 @@ public class BPMManager: NSObject {
 
 extension BPMManager: LSDevicePairingDelegate {
     public func bleDevice(_ device: LSDeviceInfo!, didPairStateChanged state: LSPairState) {
-        device.delayDisconnect = true
-        self.delegate?.onDeviceInfo(deviceInfo: device)
+        guard let lsBluetoothManager = LSBluetoothManager.default() else { return }
+        guard let delegate = self.delegate else { return }
         
-        LSBluetoothManager.default()?.addDevice(device)
-        LSBluetoothManager.default()?.startDeviceSync(self)
+        device.delayDisconnect = true
+        lsBluetoothManager.addDevice(device)
+        lsBluetoothManager.startDeviceSync(self)
+        
+        delegate.onDeviceInfo(deviceInfo: device)
     }
 }
 
